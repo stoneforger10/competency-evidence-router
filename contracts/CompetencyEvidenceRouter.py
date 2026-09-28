@@ -1,6 +1,7 @@
 # { "Depends": "py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6" }
 """Evidence-bound, learner-driven competency transitions on GenLayer."""
 
+import base64
 import hashlib
 import json
 from genlayer import *
@@ -141,6 +142,11 @@ class CompetencyEvidenceRouter(gl.Contract):
                 try:
                     response = gl.nondet.web.get(url)
                     raw = response.body
+                    if url.startswith("https://api.github.com/repos/") and int(response.status) == 200:
+                        envelope = json.loads(raw.decode("utf-8"))
+                        if not isinstance(envelope, dict) or envelope.get("encoding") != "base64":
+                            raise gl.vm.UserError("[EXTERNAL] unsupported GitHub content encoding")
+                        raw = base64.b64decode(envelope["content"], validate=True)
                     body = raw.decode("utf-8", errors="replace")
                     item = {"status": int(response.status), "sha256": sha(raw),
                             "hash_match": sha(raw) == expected,

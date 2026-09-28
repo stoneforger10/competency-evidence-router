@@ -26,7 +26,7 @@ Attempts are keyed by program, learner address and attempt ID and are immutable.
 
 ## Demo and limitations
 
-`examples/` contains a two-module rubric and three public demonstration submissions: a method pass, a reproduction fail and a reproduction pass. They are synthetic educational artifacts, not independently authored research. Pin their GitHub raw URLs to the exact published commit before registering them. `LIVE_PROOFS.md` records only executed and verified chain transactions; historical graph-submission transactions are **not** evidence for this contract.
+`examples/` contains a two-module rubric and three public demonstration submissions: a method pass, a reproduction fail and a reproduction pass. They are synthetic educational artifacts, not independently authored research. Pin their URLs to the exact published commit before registering them. The contract accepts plain HTTPS text or GitHub Contents API responses with base64-encoded file content; for the API it hashes the **decoded file**, not the JSON wrapper. `LIVE_PROOFS.md` records only executed and verified chain transactions; historical graph-submission transactions are **not** evidence for this contract.
 
 Risks: HTTPS availability, mutable redirects, prompt injection inside fetched documents, model disagreement, and work plagiarism. Hash mismatch and ambiguity fail closed. The report root is an audit commitment, not a proof that the work is original. See `SECURITY.md`.
 

@@ -1,3 +1,4 @@
+import base64
 import hashlib
 import json
 
@@ -85,3 +86,25 @@ def test_contradictory_model_output_does_not_advance(direct_vm, direct_deploy, d
     c.submit_work("lab", "contradiction", "https://work.example.org/pass", h(PASS))
     assert json.loads(c.get_my_attempt("lab", "contradiction"))["outcome"] == "INCONCLUSIVE"
     assert json.loads(c.get_my_progress("lab"))["index"] == 0
+
+
+def test_pinned_github_contents_are_decoded_before_assessment(direct_vm, direct_deploy, direct_alice, direct_bob):
+    c = direct_deploy("contracts/CompetencyEvidenceRouter.py")
+    rubric_url = "https://api.github.com/repos/example/fixtures/contents/rubric.txt?ref=commit"
+    work_url = "https://api.github.com/repos/example/fixtures/contents/work.txt?ref=commit"
+    direct_vm.sender = direct_alice
+    c.create_program("lab", "Lab skills")
+    c.add_module("lab", "method", rubric_url, h(RUBRIC), "method,evidence")
+    c.add_module("lab", "repeat", "https://rubric.example.org/repeat", h(REPRO), "reproduction,comparison")
+    c.seal_program("lab")
+    direct_vm.sender = direct_bob
+    c.enroll("lab")
+    for url, body in ((rubric_url, RUBRIC), (work_url, PASS)):
+        encoded = base64.b64encode(body.encode()).decode()
+        direct_vm.mock_web(url.replace("?", r"\?"), {"status": 200, "body": json.dumps({"encoding": "base64", "content": encoded})})
+    direct_vm.mock_llm(r".*Judge only whether the work.*", json.dumps({"met": {"method": True, "evidence": True}, "decision": "PASS"}))
+    c.submit_work("lab", "api-pass", work_url, h(PASS))
+    report = json.loads(c.get_my_attempt("lab", "api-pass"))
+    assert report["sources"][0]["sha256"] == h(RUBRIC)
+    assert report["sources"][1]["sha256"] == h(PASS)
+    assert report["outcome"] == "ADVANCE"
