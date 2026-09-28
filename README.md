@@ -43,3 +43,5 @@ genlayer deploy --contract contracts/CompetencyEvidenceRouter.py
 For each write, wait for `genlayer receipt <tx>` and check both `FINALIZED` **and** leader execution `SUCCESS`; finality alone is not execution success. Then compare `genlayer code <address>` byte-for-byte with the deployed GitHub revision. StudioNet is gasless but rate-limited.
 
 API: `create_program`, `add_module`, `seal_program`, `enroll`, `submit_work`, `get_program`, `get_progress`, `get_my_progress`, `get_attempt`, `get_my_attempt`.
+
+Live StudioNet source and the finalized ADVANCE → RETRY → COMPLETE proof matrix are in [LIVE_PROOFS.md](LIVE_PROOFS.md). Use [SUBMISSION.md](SUBMISSION.md) for a single representative Builder submission; do not resubmit the two earlier graph-domain variants.

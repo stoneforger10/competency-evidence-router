@@ -8,18 +8,24 @@ The first GitHub Contents adapter revision deployed at `0x25D94C9cDD83D1f9e2E519
 
 The header-fix revision deployed at `0x9a293be1da1ACeEea1729Aa5261D49d0F5ECcaC1` (tx `0x1858fb86a8c685b509e3b223775d7cfe5a5ffb399b9a8a6dd6afbcb46973e9f0`). Assessment tx `0x5968fc7c0aed95816b594624ea4953948ffb935dbedf5fa97b8ee95d1c5e9647` finalized with leader `SUCCESS` but recorded `INCONCLUSIVE`. Its stdout showed `Only base64 data is allowed`: GitHub wraps base64 content in line breaks, which strict decoding rejected. This revision is superseded by whitespace-normalizing decoding; do **not** cite the assessment as a PASS.
 
-No whitespace-fix deployment or positive assessment is claimed until its finalized receipt shows execution success and the Explorer source matches the published contract.
+## Current deployment — matching source
 
-Required proof matrix:
+StudioNet contract: [0x5F66D8d221b0D678Bfc767B8095b36d5435e4649](https://explorer-studio.genlayer.com/address/0x5F66D8d221b0D678Bfc767B8095b36d5435e4649).
 
-| Case | Expected effect | Explorer transaction |
+`gen_getContractCode` bytes equal `contracts/CompetencyEvidenceRouter.py` at commit `3bf70d3` byte-for-byte. SHA-256: `92645bd307a19091e53c1ac058fd8ae4f83889c08f3ff67ee41ef77c544a8d29`. Every transaction below was checked through `eth_getTransactionByHash`: `FINALIZED`, `MAJORITY_AGREE`, leader execution `SUCCESS`.
+
+| Case | Verified effect | Explorer transaction |
 | --- | --- | --- |
-| Deployment | Source available at new address | Pending |
-| Program + sealed rubrics | Immutable criteria configuration | Pending |
-| Learner enrollment | Index 0 | Pending |
-| Method work meets both criteria | ADVANCE to index 1 | Pending |
-| Incomplete reproduction work | RETRY, index remains 1 | Pending |
-| Complete reproduction work | COMPLETE, index 2 | Pending |
-| Hash mismatch | INCONCLUSIVE, no advancement | Pending |
+| Deployment | Source matches pinned repository file | [0xd957…3e7f](https://explorer-studio.genlayer.com/tx/0xd957930a336a90af3458145d26d54e6b06364fdf40a81711e73e5f8c0ea83e7f) |
+| Program creation | `lab-api-v3` initialized | [0x7038…419c](https://explorer-studio.genlayer.com/tx/0x70383c0e6f90c92c396afaf434ccd5c826f5a124cb7097e236b5741a9bf0419c) |
+| Method rubric | Pinned URL and decoded-file SHA-256 registered | [0xd945…8f70](https://explorer-studio.genlayer.com/tx/0xd9455007a3660bf1b4b32600353e3fa8332af4c25c8576b1cfd4007dfb9c8f70) |
+| Reproduction rubric | Second pinned URL and SHA-256 registered | [0x83fc…7a8d](https://explorer-studio.genlayer.com/tx/0x83fc8c7f9d36e07c235e044c403db702b58d053f7351e6b9aa8402d7fc977a8d) |
+| Program seal | Rubric configuration made immutable | [0x4ec9…4874](https://explorer-studio.genlayer.com/tx/0x4ec9670e443eb581bbbaf365f4a7543d2b35a0371ac48d7512d1265f021f4874) |
+| Learner enrollment | Index 0, ACTIVE | [0xd984…b252](https://explorer-studio.genlayer.com/tx/0xd984fb40c046484aa15d48899a9febc93b05f16869b44e673ab445629521b252) |
+| Method assessment | Both fetched sources HTTP 200 and hash-matched; `method=true`, `evidence=true`, PASS → ADVANCE | [0xfb16…1650](https://explorer-studio.genlayer.com/tx/0xfb16a40371637b6de9038913c61582bf7a94af9ba6541668568ba2dc79751650) |
+| Incomplete reproduction | Both sources matched; `reproduction=false`, `comparison=false`, FAIL → RETRY; index remains 1 | [0x4769…b7ba](https://explorer-studio.genlayer.com/tx/0x47691d04642a3d37ee1892f62c163c24e8db980836c740bee2c5fb921201b7ba) |
+| Complete reproduction | Both sources matched; `reproduction=true`, `comparison=true`, PASS → COMPLETE; index 2 | [0x3fc6…816b](https://explorer-studio.genlayer.com/tx/0x3fc6fab41dc5de5536339ac53cb1b22d7013d34e815d6a9c1df25c4a4357816b) |
+
+The final `get_my_progress("lab-api-v3")` returned `{"attempts":3,"index":2,"state":"COMPLETE"}`. A hash-mismatch path is covered by direct tests, **not** claimed as an onchain proof.
 
 Do not reuse the `DynamicResearchCommons` or `DynamicLearningPath` Explorer transactions as proof for this architecture.
