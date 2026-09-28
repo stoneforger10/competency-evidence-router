@@ -1,0 +1,10 @@
+.env
+.env.*
+*.key
+*.pem
+__pycache__/
+.pytest_cache/
+.gltest_cache/
+artifacts/
+node_modules/
+.tooldeps/

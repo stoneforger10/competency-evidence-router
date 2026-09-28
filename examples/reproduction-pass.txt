@@ -1,0 +1,1 @@
+I repeated the previous water-cooling procedure: heated 100 mL water to 60 C, placed it in a 22 C room, and used the calibrated thermometer after 10 minutes. The repeat measurement was 43 C. The original result was 44 C after 10 minutes, so the repeated result was 1 C lower.

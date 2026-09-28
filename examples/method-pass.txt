@@ -1,0 +1,1 @@
+I measured the cooling of a 100 mL water sample. First, I heated the sample to 60 C. Second, I placed it in a room at 22 C. Third, I used the same calibrated thermometer to read the water temperature after 10 minutes. The measured temperature after 10 minutes was 44 C. The measured drop was 16 C.

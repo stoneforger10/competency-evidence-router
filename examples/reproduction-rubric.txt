@@ -1,0 +1,4 @@
+This is a demonstration rubric for the reproduction module.
+Criterion reproduction: the submitted work must describe repeating a prior procedure and state the observed result of the repeat.
+Criterion comparison: the submitted work must compare the repeated result with the original result using a numerical difference or explicit equality.
+Both criteria are mandatory. An intention to replicate is not a completed repeat.

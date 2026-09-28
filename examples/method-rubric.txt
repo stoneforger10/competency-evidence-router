@@ -1,0 +1,4 @@
+This is a demonstration rubric for the method module.
+Criterion method: the submitted work must state a concrete repeatable procedure with an ordered sequence of steps.
+Criterion evidence: the submitted work must report at least one measured observation from that procedure, including the measurement and unit.
+Both criteria are mandatory. A promise to do the work later does not satisfy either criterion.
