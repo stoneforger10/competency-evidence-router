@@ -140,7 +140,11 @@ class CompetencyEvidenceRouter(gl.Contract):
             bodies = []
             for url, expected in ((module["rubric_url"], module["rubric_hash"]), (work_url, work_hash)):
                 try:
-                    response = gl.nondet.web.get(url)
+                    if url.startswith("https://api.github.com/repos/"):
+                        response = gl.nondet.web.get(url, headers={"User-Agent": "CompetencyEvidenceRouter/1.0",
+                                                                     "Accept": "application/vnd.github+json"})
+                    else:
+                        response = gl.nondet.web.get(url)
                     raw = response.body
                     if url.startswith("https://api.github.com/repos/") and int(response.status) == 200:
                         envelope = json.loads(raw.decode("utf-8"))
@@ -151,7 +155,8 @@ class CompetencyEvidenceRouter(gl.Contract):
                     item = {"status": int(response.status), "sha256": sha(raw),
                             "hash_match": sha(raw) == expected,
                             "complete": 0 < len(raw) <= 6000 and "\ufffd" not in body}
-                except Exception:
+                except Exception as exc:
+                    print("evidence-fetch-error", type(exc).__name__, str(exc)[:180])
                     body = ""
                     item = {"status": 0, "sha256": "", "hash_match": False, "complete": False}
                 sources.append(item)
