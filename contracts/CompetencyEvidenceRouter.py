@@ -150,7 +150,7 @@ class CompetencyEvidenceRouter(gl.Contract):
                         envelope = json.loads(raw.decode("utf-8"))
                         if not isinstance(envelope, dict) or envelope.get("encoding") != "base64":
                             raise gl.vm.UserError("[EXTERNAL] unsupported GitHub content encoding")
-                        raw = base64.b64decode(envelope["content"], validate=True)
+                        raw = base64.b64decode("".join(envelope["content"].split()), validate=True)
                     body = raw.decode("utf-8", errors="replace")
                     item = {"status": int(response.status), "sha256": sha(raw),
                             "hash_match": sha(raw) == expected,

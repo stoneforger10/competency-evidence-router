@@ -100,7 +100,8 @@ def test_pinned_github_contents_are_decoded_before_assessment(direct_vm, direct_
     direct_vm.sender = direct_bob
     c.enroll("lab")
     for url, body in ((rubric_url, RUBRIC), (work_url, PASS)):
-        encoded = base64.b64encode(body.encode()).decode()
+        value = base64.b64encode(body.encode()).decode()
+        encoded = value[:32] + "\n" + value[32:] + "\n"
         direct_vm.mock_web(url.replace("?", r"\?"), {"status": 200, "body": json.dumps({"encoding": "base64", "content": encoded})})
     direct_vm.mock_llm(r".*Judge only whether the work.*", json.dumps({"met": {"method": True, "evidence": True}, "decision": "PASS"}))
     c.submit_work("lab", "api-pass", work_url, h(PASS))
