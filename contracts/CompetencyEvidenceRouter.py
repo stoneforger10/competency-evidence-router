@@ -195,9 +195,17 @@ class CompetencyEvidenceRouter(gl.Contract):
         return self.programs[program_id]
 
     @gl.public.view
-    def get_progress(self, program_id: str, learner: str) -> str:
-        return self.progress[canonical([program_id, learner.lower()])]
+    def get_progress(self, program_id: str, learner: Address) -> str:
+        return self.progress[canonical([program_id, learner.as_hex.lower()])]
 
     @gl.public.view
-    def get_attempt(self, program_id: str, learner: str, attempt_id: str) -> str:
-        return self.attempts[canonical([program_id, learner.lower(), attempt_id])]
+    def get_my_progress(self, program_id: str) -> str:
+        return self.progress[canonical([program_id, gl.message.sender_address.as_hex.lower()])]
+
+    @gl.public.view
+    def get_attempt(self, program_id: str, learner: Address, attempt_id: str) -> str:
+        return self.attempts[canonical([program_id, learner.as_hex.lower(), attempt_id])]
+
+    @gl.public.view
+    def get_my_attempt(self, program_id: str, attempt_id: str) -> str:
+        return self.attempts[canonical([program_id, gl.message.sender_address.as_hex.lower(), attempt_id])]
